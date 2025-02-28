@@ -5,9 +5,11 @@ namespace NetForm
 
 
         private Button[] filmButtons;
+        private Dictionary<Button, Point> originalLocations = new Dictionary<Button, Point>();
         public Form1()
         {
             InitializeComponent();
+
 
 
         }
@@ -51,26 +53,47 @@ namespace NetForm
 
                 filmButtons[i] = btn;
                 this.Controls.Add(btn);
+                originalLocations[btn] = btn.Location;
             }
         }
 
         private void CmbGenre_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedGenre = cmbGenre.SelectedItem.ToString();
+            int yOffset = 60; 
 
-            foreach (Button btn in filmButtons)
+            if (selectedGenre == "All Genres")
             {
                 
-                if (selectedGenre == "All Genres")
+                foreach (Button btn in filmButtons)
                 {
                     btn.Visible = true;
-                }
-                else
-                {
-                  
-                    btn.Visible = (btn.Tag.ToString() == selectedGenre);
+                    btn.Location = originalLocations[btn]; 
                 }
             }
+
+
+
+            else
+            {
+                
+                foreach (Button btn in filmButtons)
+                {
+                    if (btn.Tag.ToString() == selectedGenre)
+                    {
+                        btn.Visible = true;
+                        btn.Location = new Point(20, yOffset);
+                       
+                    }
+                    else
+                    {
+                        btn.Visible = false;
+                    }
+                }
+            }
+
         }
     }
 }
+
+
